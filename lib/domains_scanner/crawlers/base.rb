@@ -2,12 +2,8 @@ require 'domains_scanner/results'
 
 module DomainsScanner
   module Crawlers
-    TOP_LEVEL_DOMAINS = %w(com cn com.cn net org ltd cc mobi live io co me hk).freeze
-
     class Base
-      def initialize(domain_name, top_level_domains = TOP_LEVEL_DOMAINS)
-        @domain_name = domain_name
-        @top_level_domains = Array(top_level_domains)
+      def initialize
       end
 
       def agent

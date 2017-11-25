@@ -1,8 +1,8 @@
 module DomainsScanner
   module Crawlers
     class Baidu < Base
-      def search(top_level_domain, page = 1)
-        query = search_keyword(@domain_name, top_level_domain)
+      def search(domain_name, top_level_domain, page = 1)
+        query = search_keyword(domain_name, top_level_domain)
         start = (page - 1) * 10
         doc = agent.get("https://www.baidu.com/s?wd=#{query}&pn=#{start}")
 
@@ -20,7 +20,13 @@ module DomainsScanner
           # Baidu encrypted the target url, so we can use show url only, but it is enough!
           # bbs.abc.net/for...php?...
           show_url = i.search("div:last-child > a.c-showurl")
-          url = show_url ? "http://#{show_url.text}" : nil
+          url = if show_url
+            if show_url.text.start_with?("http")
+              show_url.text
+            else
+              "http://#{show_url.text}"
+            end
+          end
 
           { title: i.text, url: URI.encode(url) }
         end

@@ -1,8 +1,8 @@
 module DomainsScanner
   module Crawlers
     class Google < Base
-      def search(top_level_domain, page = 1)
-        query = search_keyword(@domain_name, top_level_domain)
+      def search(domain_name, top_level_domain, page = 1)
+        query = search_keyword(domain_name, top_level_domain)
         start = (page - 1) * 10
         doc = agent.get("https://google.com/search?q=#{query}&start=#{start}")
 
