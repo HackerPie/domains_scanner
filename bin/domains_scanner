@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'domains_scanner'
+require 'byebug'
+
+PRINT_LINE_LENGTH=80
+def print_list(list)
+  list.each do |group_name, group|
+    puts "Found domains for .#{group_name}\n#{"-" * 50}"
+    group.each do |domain, engines|
+      tips_para = "Search Engine: #{engines.join(", ")}"
+      points_count = [PRINT_LINE_LENGTH - domain.length - tips_para.length - 2, 0].max
+      puts "#{domain} #{'·' * points_count} #{tips_para}"
+    end
+    puts ""
+  end;nil
+end
+
+top_level_domains = nil
+OptionParser.new do |opts|
+  opts.banner = "Usage: domains_scanner [options] domain_name"
+  opts.separator ""
+  opts.separator "Specific options:"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely, default: false") do |v|
+    DomainsScanner.verbose = true
+  end
+
+  opts.on("--top-domains=", "search top level domains, split by comma, default: #{DomainsScanner::TOP_LEVEL_DOMAINS}") do |t|
+    puts "Manually configured top_level_domains=#{t.split(",")}"
+    top_level_domains = t.split(",")
+  end
+
+  opts.on("-e", "--engines=", "search engines, split by comma, default: [google, baidu]") do |engines|
+    puts "Manually configured engines=#{engines.split(",")}"
+    DomainsScanner.engines = engines.split(",")
+  end
+
+  opts.on("--max-page=", "Maximum number of pages to scan, default: 20") do |p|
+    puts "Manually configured max_page=#{p}"
+    DomainsScanner.max_page = p.to_i
+  end
+
+  opts.separator ""
+  opts.separator "Common options:"
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+  # Another typical switch to print the version.
+  opts.on_tail("--version", "Show version") do
+    puts DomainsScanner::Version
+    exit
+  end
+end.parse!
+domain_word = ARGV.pop
+
+list = DomainsScanner.scan(domain_word: domain_word, top_level_domains: top_level_domains)
+print_list(list)

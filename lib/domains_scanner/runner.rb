@@ -27,6 +27,7 @@ module DomainsScanner
               end
               break unless results.have_next_page
             rescue Mechanize::ResponseCodeError => e
+              puts "search in #{engine} error, skip now" if DomainsScanner.verbose
             end
 
             break unless page < DomainsScanner.max_page
