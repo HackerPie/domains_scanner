@@ -28,7 +28,7 @@ module DomainsScanner
       end
 
       def have_next_page?(doc)
-        !!doc.search("div#foot .cur+td")
+        doc.search("div#foot .cur+td").any?
       end
     end
   end

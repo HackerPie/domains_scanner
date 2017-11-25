@@ -11,7 +11,9 @@ module DomainsScanner
       end
 
       def agent
-        @agent ||= Mechanize.new
+        @agent ||= Mechanize.new do |agent|
+          agent.user_agent_alias = "Mac Safari"
+        end
       end
 
       def search_keyword(domain_name, top_level_domain)

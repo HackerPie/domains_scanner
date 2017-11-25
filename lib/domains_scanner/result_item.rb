@@ -1,5 +1,3 @@
-require 'uri'
-
 module DomainsScanner
   class ResultItem
     attr_reader :title, :url, :uri
