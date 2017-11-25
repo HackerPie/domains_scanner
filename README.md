@@ -2,7 +2,7 @@
 
 Search possible sub domains according to specified domain. DomainsScanner default use `site:*.{domain}.{top_level_domain}` search syntax to search sites available from baidu and google searchs.
 
-![Preview Screenshot](./docs/images/preview.png)
+![Preview Screenshot](./doc/images/preview.png)
 
 ## Installation
 
