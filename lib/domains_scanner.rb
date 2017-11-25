@@ -34,6 +34,8 @@ module DomainsScanner
       begin
         while(result = output_queue.pop(non_block = true)) do
           domain, top_level_domain, engine = result.values_at(:domain, :top_level_domain, :engine)
+          next unless domain
+
           group = list[top_level_domain] ||= {}
           group[domain] ||= []
 

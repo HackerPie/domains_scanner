@@ -2,6 +2,7 @@ module DomainsScanner
   module Crawlers
     class Baidu < Base
       def search(domain_name, top_level_domain, page = 1)
+        set_user_agent
         query = search_keyword(domain_name, top_level_domain)
         start = (page - 1) * 10
         doc = agent.get("https://www.baidu.com/s?wd=#{query}&pn=#{start}")

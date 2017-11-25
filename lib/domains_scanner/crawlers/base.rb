@@ -7,9 +7,15 @@ module DomainsScanner
       end
 
       def agent
-        @agent ||= Mechanize.new do |agent|
-          agent.user_agent_alias = "Mac Safari"
-        end
+        @agent ||= Mechanize.new
+      end
+
+      def set_user_agent
+        agent.user_agent_alias = available_agent_alias.sample
+      end
+
+      def available_agent_alias
+        @available_agent_alias ||= Mechanize::AGENT_ALIASES.keys - ['Mechanize']
       end
 
       def search_keyword(domain_name, top_level_domain)
