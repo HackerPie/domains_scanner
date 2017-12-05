@@ -1,14 +1,12 @@
 module DomainsScanner
   module Crawlers
     class Google < Base
-      def first_search(domain_name, top_level_domain)
-        query = search_keyword(domain_name, top_level_domain)
-        doc = agent.get("https://google.com/search?q=#{query}&start=#{start}")
+      def host
+        "https://google.com"
+      end
 
-        results = parse_results(doc)
-        have_next_page = have_next_page?(doc)
-
-        DomainsScanner::Results.new(results, have_next_page)
+      def keyword_field_name
+        "q"
       end
 
       # [{title: "xxx", url: "xxx"}, ...]
@@ -26,8 +24,8 @@ module DomainsScanner
         end
       end
 
-      def have_next_page?(doc)
-        doc.search("div#foot .cur+td").any?
+      def next_page_link_selector
+        "div#foot .cur+td>a"
       end
     end
   end
