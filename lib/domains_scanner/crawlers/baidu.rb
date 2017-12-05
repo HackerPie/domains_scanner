@@ -1,16 +1,30 @@
 module DomainsScanner
   module Crawlers
     class Baidu < Base
-      def search(domain_name, top_level_domain, page = 1)
-        set_user_agent
+      def host
+        "https://www.baidu.com"
+      end
+
+      def search_by_form(domain_name, top_level_domain)
+        doc = agent.get(host)
+
+        form = doc.forms.first
         query = search_keyword(domain_name, top_level_domain)
-        start = (page - 1) * 10
-        doc = agent.get("https://www.baidu.com/s?wd=#{query}&pn=#{start}")
+        form['wd'] = query
+        doc = form.submit
 
         results = parse_results(doc)
-        have_next_page = have_next_page?(doc)
+        next_page_link = parse_next_page_link(doc)
 
-        DomainsScanner::Results.new(results, have_next_page)
+        DomainsScanner::Results.new(results, next_page_link)
+      end
+
+      def search_by_link(link)
+        doc = agent.get(link)
+        results = parse_results(doc)
+        next_page_link = parse_next_page_link(doc)
+
+        DomainsScanner::Results.new(results, next_page_link)
       end
 
       # [{title: "xxx", url: "xxx"}, ...]
@@ -33,8 +47,12 @@ module DomainsScanner
         end
       end
 
-      def have_next_page?(doc)
-        doc.search("#page strong+a").any?
+      def parse_next_page_link(doc)
+        next_page_tag = doc.search("#page strong+a").first
+        return unless next_page_tag
+
+        href = next_page_tag.attributes["href"]
+        "#{host}#{href}"
       end
     end
   end
