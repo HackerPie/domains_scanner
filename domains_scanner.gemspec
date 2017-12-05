@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{search possible domains for specified keyword}
   spec.description   = %q{search possible domains by search engines and other tools}
-  spec.homepage      = "https://rubygems.org/gems/domains_scanner"
+  spec.homepage      = "https://github.com/hackerpie/domains_scanner"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
