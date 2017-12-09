@@ -2,7 +2,6 @@
 
 require 'optparse'
 require 'domains_scanner'
-require 'ansi_colors'
 
 PRINT_LINE_LENGTH=80
 def print_list(list)

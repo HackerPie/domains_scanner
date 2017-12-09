@@ -1,6 +1,8 @@
 require 'uri'
 require 'thread'
+require 'ansi_colors'
 require "domains_scanner/version"
+require "domains_scanner/printer"
 require "domains_scanner/crawlers"
 require "domains_scanner/runner"
 
@@ -25,7 +27,7 @@ module DomainsScanner
       end
       runners.each(&:run)
 
-      puts "Start analysis crawl results..." if DomainsScanner.verbose
+      DomainsScanner::Printer.puts { "Start analysis crawl results...".green }
       analysis_output_queue
     end
 
