@@ -31,10 +31,13 @@ module DomainsScanner
 
               results.items.each do |item|
                 # Avoid some unexpected hostname from ads
-                next unless item.host.to_s.include?(domain)
-                DomainsScanner.output_queue.push({
-                    domain: item.host, top_level_domain: @top_level_domain, engine: engine
-                  })
+                if item.host.to_s.include?(domain)
+                  DomainsScanner.output_queue.push({
+                      domain: item.host, top_level_domain: @top_level_domain, engine: engine
+                    })
+                else
+                  puts "Abondon unexpected domain: #{item.host}" if DomainsScanner.verbose
+                end
               end
             rescue Mechanize::ResponseCodeError => e
               puts "search in #{engine} error, skip now" if DomainsScanner.verbose
