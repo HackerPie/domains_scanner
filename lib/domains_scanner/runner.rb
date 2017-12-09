@@ -30,6 +30,8 @@ module DomainsScanner
               next_page_link = results.next_page_link
 
               results.items.each do |item|
+                # Avoid some unexpected hostname from ads
+                next unless item.host.to_s.include?(domain)
                 DomainsScanner.output_queue.push({
                     domain: item.host, top_level_domain: @top_level_domain, engine: engine
                   })
