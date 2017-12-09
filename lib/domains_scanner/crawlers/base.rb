@@ -3,9 +3,6 @@ require 'domains_scanner/results'
 module DomainsScanner
   module Crawlers
     class Base
-      def initialize
-      end
-
       def agent
         @agent ||= Mechanize.new do |agent|
           agent.user_agent_alias = "Mac Safari"
